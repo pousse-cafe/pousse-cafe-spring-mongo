@@ -2,6 +2,7 @@ package poussecafe.spring.mongo.storage;
 
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import poussecafe.domain.EntityAttributes;
@@ -25,6 +26,8 @@ public abstract class MongoDataAccess<K, D extends EntityAttributes<K>, M extend
             mongoRepository().insert(data);
         } catch (OptimisticLockingFailureException e) {
             throw translateOptimisticLockingFailure(e);
+        } catch (DuplicateKeyException e) {
+            throw new poussecafe.runtime.DuplicateKeyException(e.getMessage(), e);
         }
     }
 
