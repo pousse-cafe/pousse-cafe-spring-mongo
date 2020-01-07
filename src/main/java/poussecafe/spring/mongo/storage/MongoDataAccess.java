@@ -62,4 +62,9 @@ public abstract class MongoDataAccess<K, D extends EntityAttributes<K>, M extend
     public List<D> findAll() {
         return mongoRepository().findAll();
     }
+
+    @Override
+    public boolean existsById(K id) {
+        return mongoRepository().existsById(convertId(id));
+    }
 }
