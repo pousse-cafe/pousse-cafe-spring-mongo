@@ -1,7 +1,7 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import poussecafe.discovery.DataAccessImplementation;
+import poussecafe.source.analysis.Name;
 import poussecafe.source.generation.AggregateCodeGenerationConventions;
 import poussecafe.source.generation.tools.AstWrapper;
 import poussecafe.source.generation.tools.ComilationUnitEditor;
@@ -18,7 +18,8 @@ public class MongoDataAccessImplementationEditor {
     public void edit() {
         compilationUnitEditor.setPackage(AggregateCodeGenerationConventions.adaptersPackageName(aggregate));
 
-        compilationUnitEditor.addImportLast(Autowired.class);
+        var autowiredTypeName = new Name("org.springframework.beans.factory.annotation.Autowired");
+        compilationUnitEditor.addImportLast(autowiredTypeName);
         compilationUnitEditor.addImportLast(DataAccessImplementation.class);
         compilationUnitEditor.addImportLast(MongoDataAccess.class);
         compilationUnitEditor.addImportLast(SpringMongoDbStorage.class);
@@ -87,7 +88,7 @@ public class MongoDataAccessImplementationEditor {
         mongoRepositoryEditor.setBody(mongoRepositoryBody);
 
         var repositoryFieldEditor = typeEditor.field("repository").get(0);
-        repositoryFieldEditor.modifiers().markerAnnotation(Autowired.class);
+        repositoryFieldEditor.modifiers().markerAnnotation(autowiredTypeName.getIdentifier());
         repositoryFieldEditor.modifiers().setVisibility(Visibility.PRIVATE);
         repositoryFieldEditor.setType(ast.newSimpleType(
                 MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate).getIdentifier()));

@@ -1,6 +1,6 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import poussecafe.source.analysis.Name;
 import poussecafe.source.generation.AggregateCodeGenerationConventions;
 import poussecafe.source.generation.tools.AstWrapper;
 import poussecafe.source.generation.tools.ComilationUnitEditor;
@@ -15,7 +15,8 @@ public class MongoDataRepositoryEditor {
     public void edit() {
         compilationUnitEditor.setPackage(AggregateCodeGenerationConventions.adaptersPackageName(aggregate));
 
-        compilationUnitEditor.addImportLast(MongoRepository.class);
+        var mongoRepositoryTypeName = new Name("org.springframework.data.mongodb.repository.MongoRepository");
+        compilationUnitEditor.addImportLast(mongoRepositoryTypeName);
 
         var typeEditor = compilationUnitEditor.typeDeclaration();
 
@@ -24,7 +25,7 @@ public class MongoDataRepositoryEditor {
         var typeName = MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate);
         typeEditor.setName(typeName);
 
-        var mongoRepositoryType = ast.newParameterizedType(MongoRepository.class);
+        var mongoRepositoryType = ast.newParameterizedType(mongoRepositoryTypeName.getIdentifier());
         mongoRepositoryType.typeArguments().add(ast.newSimpleType(
                 AggregateCodeGenerationConventions.aggregateAttributesImplementationTypeName(aggregate).getIdentifier()));
         mongoRepositoryType.typeArguments().add(ast.newSimpleType("String"));

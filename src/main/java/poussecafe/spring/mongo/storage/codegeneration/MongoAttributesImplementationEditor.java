@@ -1,7 +1,6 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
+import poussecafe.source.analysis.Name;
 import poussecafe.source.generation.AggregateAttributesImplementationEditor;
 import poussecafe.source.generation.tools.ComilationUnitEditor;
 import poussecafe.source.model.Aggregate;
@@ -11,16 +10,18 @@ import static java.util.Objects.requireNonNull;
 public class MongoAttributesImplementationEditor {
 
     public void edit() {
-        compilationUnitEditor.addImportFirst(Version.class.getCanonicalName());
-        compilationUnitEditor.addImportFirst(Id.class.getCanonicalName());
+        var versionTypeName = new Name("org.springframework.data.annotation.Version");
+        compilationUnitEditor.addImportFirst(versionTypeName);
+        var idTypeName = new Name("org.springframework.data.annotation.Id");
+        compilationUnitEditor.addImportFirst(idTypeName);
 
         var typeEditor = compilationUnitEditor.typeDeclaration();
 
         var identifierField = typeEditor.field(AggregateAttributesImplementationEditor.IDENTIFIER_FIELD_NAME).get(0);
-        identifierField.modifiers().markerAnnotation(Id.class);
+        identifierField.modifiers().markerAnnotation(idTypeName);
 
         var versionField = typeEditor.field(AggregateAttributesImplementationEditor.VERSION_FIELD_NAME).get(0);
-        versionField.modifiers().markerAnnotation(Version.class);
+        versionField.modifiers().markerAnnotation(versionTypeName);
         versionField.modifiers().removeAnnotations(SuppressWarnings.class);
 
         compilationUnitEditor.flush();
