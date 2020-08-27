@@ -2,9 +2,9 @@ package poussecafe.spring.mongo.storage.codegeneration;
 
 import java.nio.file.Path;
 import poussecafe.source.analysis.Name;
-import poussecafe.source.generation.AggregateCodeGenerationConventions;
+import poussecafe.source.generation.NamingConventions;
 import poussecafe.source.generation.StorageAdaptersCodeGenerator;
-import poussecafe.source.generation.tools.ComilationUnitEditor;
+import poussecafe.source.generation.tools.CompilationUnitEditor;
 import poussecafe.source.model.Aggregate;
 
 import static java.util.Objects.requireNonNull;
@@ -18,7 +18,7 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
     }
 
     @Override
-    protected void updateDefaultAttributesImplementation(Aggregate aggregate, ComilationUnitEditor compilationUnitEditor) {
+    protected void updateDefaultAttributesImplementation(Aggregate aggregate, CompilationUnitEditor compilationUnitEditor) {
         var editor = new MongoAttributesImplementationEditor.Builder()
                 .compilationUnitEditor(compilationUnitEditor)
                 .aggregate(aggregate)
@@ -27,7 +27,7 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
     }
 
     @Override
-    protected void addDataAccessImplementation(Aggregate aggregate, ComilationUnitEditor compilationUnitEditor) {
+    protected void addDataAccessImplementation(Aggregate aggregate, CompilationUnitEditor compilationUnitEditor) {
         var editor = new MongoDataAccessImplementationEditor.Builder()
                 .compilationUnitEditor(compilationUnitEditor)
                 .aggregate(aggregate)
@@ -46,7 +46,7 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
     }
 
     public static Name aggregateMongoRepositoryTypeName(Aggregate aggregate) {
-        return new Name(AggregateCodeGenerationConventions.adaptersPackageName(aggregate),
+        return new Name(NamingConventions.adaptersPackageName(aggregate),
                 aggregate.name() + "DataMongoRepository");
     }
 

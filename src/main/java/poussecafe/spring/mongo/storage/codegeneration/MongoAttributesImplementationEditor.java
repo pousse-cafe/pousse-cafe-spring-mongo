@@ -2,7 +2,7 @@ package poussecafe.spring.mongo.storage.codegeneration;
 
 import poussecafe.source.analysis.Name;
 import poussecafe.source.generation.AggregateAttributesImplementationEditor;
-import poussecafe.source.generation.tools.ComilationUnitEditor;
+import poussecafe.source.generation.tools.CompilationUnitEditor;
 import poussecafe.source.model.Aggregate;
 
 import static java.util.Objects.requireNonNull;
@@ -11,9 +11,9 @@ public class MongoAttributesImplementationEditor {
 
     public void edit() {
         var versionTypeName = new Name("org.springframework.data.annotation.Version");
-        compilationUnitEditor.addImportFirst(versionTypeName);
+        compilationUnitEditor.addImport(versionTypeName);
         var idTypeName = new Name("org.springframework.data.annotation.Id");
-        compilationUnitEditor.addImportFirst(idTypeName);
+        compilationUnitEditor.addImport(idTypeName);
 
         var typeEditor = compilationUnitEditor.typeDeclaration();
 
@@ -39,7 +39,7 @@ public class MongoAttributesImplementationEditor {
             return editor;
         }
 
-        public Builder compilationUnitEditor(ComilationUnitEditor compilationUnitEditor) {
+        public Builder compilationUnitEditor(CompilationUnitEditor compilationUnitEditor) {
             editor.compilationUnitEditor = compilationUnitEditor;
             return this;
         }
@@ -54,5 +54,5 @@ public class MongoAttributesImplementationEditor {
 
     }
 
-    private ComilationUnitEditor compilationUnitEditor;
+    private CompilationUnitEditor compilationUnitEditor;
 }
