@@ -47,7 +47,7 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
 
     public static Name aggregateMongoRepositoryTypeName(Aggregate aggregate) {
         return new Name(NamingConventions.adaptersPackageName(aggregate),
-                aggregate.name() + "DataMongoRepository");
+                aggregate.simpleName() + "DataMongoRepository");
     }
 
     @Override
