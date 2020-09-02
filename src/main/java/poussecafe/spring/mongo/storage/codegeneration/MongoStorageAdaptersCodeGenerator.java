@@ -38,11 +38,13 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
     private void addMongoDataRepository(Aggregate aggregate) {
         var typeName = aggregateMongoRepositoryTypeName(aggregate);
         var compilationUnitEditor = compilationUnitEditor(typeName);
-        var editor = new MongoDataRepositoryEditor.Builder()
-                .compilationUnitEditor(compilationUnitEditor)
-                .aggregate(aggregate)
-                .build();
-        editor.edit();
+        if(compilationUnitEditor.isNew()) {
+            var editor = new MongoDataRepositoryEditor.Builder()
+                    .compilationUnitEditor(compilationUnitEditor)
+                    .aggregate(aggregate)
+                    .build();
+            editor.edit();
+        }
     }
 
     public static Name aggregateMongoRepositoryTypeName(Aggregate aggregate) {
