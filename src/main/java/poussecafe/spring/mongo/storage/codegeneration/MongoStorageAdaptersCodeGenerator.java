@@ -1,5 +1,6 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import poussecafe.source.analysis.Name;
 import poussecafe.source.generation.NamingConventions;
@@ -65,11 +66,22 @@ public class MongoStorageAdaptersCodeGenerator extends StorageAdaptersCodeGenera
 
         public MongoStorageAdaptersCodeGenerator build() {
             requireNonNull(generator.sourceDirectory);
+            requireNonNull(generator.formatterOptions);
             return generator;
         }
 
         public Builder sourceDirectory(Path sourceDirectory) {
             generator.sourceDirectory = sourceDirectory;
+            return this;
+        }
+
+        public Builder codeFormatterProfile(Path profile) {
+            generator.loadProfileFromFile(profile);
+            return this;
+        }
+
+        public Builder codeFormatterProfile(InputStream profile) {
+            generator.loadProfileFromFile(profile);
             return this;
         }
     }

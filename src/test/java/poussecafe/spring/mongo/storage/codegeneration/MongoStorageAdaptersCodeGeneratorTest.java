@@ -13,6 +13,7 @@ public class MongoStorageAdaptersCodeGeneratorTest extends GeneratorTest {
     protected void givenStorageGenerator() {
         generator = new MongoStorageAdaptersCodeGenerator.Builder()
                 .sourceDirectory(sourceDirectory())
+                .codeFormatterProfile(getClass().getResourceAsStream("/CodeFormatterProfileSample.xml"))
                 .build();
     }
 

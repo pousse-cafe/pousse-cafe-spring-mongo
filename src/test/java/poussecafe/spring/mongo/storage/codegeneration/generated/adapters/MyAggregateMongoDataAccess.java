@@ -8,10 +8,13 @@ import poussecafe.spring.mongo.storage.codegeneration.generated.MyAggregate;
 import poussecafe.spring.mongo.storage.codegeneration.generated.MyAggregateDataAccess;
 import poussecafe.spring.mongo.storage.codegeneration.generated.MyAggregateId;
 
-@DataAccessImplementation(aggregateRoot = MyAggregate.class, dataImplementation = MyAggregateAttributes.class, storageName = SpringMongoDbStorage.NAME)
-public class MyAggregateMongoDataAccess extends MongoDataAccess<MyAggregateId, MyAggregateAttributes, String>
-        implements
-            MyAggregateDataAccess<MyAggregateAttributes> {
+@DataAccessImplementation(
+    aggregateRoot = MyAggregate.class,
+    dataImplementation = MyAggregateAttributes.class,
+    storageName = SpringMongoDbStorage.NAME
+)
+public class MyAggregateMongoDataAccess extends MongoDataAccess<MyAggregateId, MyAggregateAttributes, String> implements
+        MyAggregateDataAccess<MyAggregateAttributes> {
 
     @Override
     protected String convertId(MyAggregateId key) {
