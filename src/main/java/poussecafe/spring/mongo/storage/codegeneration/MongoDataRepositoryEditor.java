@@ -1,10 +1,10 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
 import poussecafe.source.analysis.Name;
+import poussecafe.source.analysis.Visibility;
 import poussecafe.source.generation.NamingConventions;
 import poussecafe.source.generation.tools.AstWrapper;
 import poussecafe.source.generation.tools.CompilationUnitEditor;
-import poussecafe.source.generation.tools.Visibility;
 import poussecafe.source.model.Aggregate;
 
 import static java.util.Objects.requireNonNull;
