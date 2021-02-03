@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.pousse-cafe-framework</groupId>
         <artifactId>pousse-cafe</artifactId>
-        <version>0.25.0</version>
+        <version>0.27.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>pousse-cafe-spring-mongo</artifactId>
@@ -12,14 +12,14 @@
     <version>0.17.0-SNAPSHOT</version>
 
     <properties>
-        <spring.data.mongo.version>2.2.1.RELEASE</spring.data.mongo.version>
+        <spring.data.mongo.version>3.1.3</spring.data.mongo.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.pousse-cafe-framework</groupId>
             <artifactId>pousse-cafe-source</artifactId>
-            <version>0.25.0</version>
+            <version>0.27.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
