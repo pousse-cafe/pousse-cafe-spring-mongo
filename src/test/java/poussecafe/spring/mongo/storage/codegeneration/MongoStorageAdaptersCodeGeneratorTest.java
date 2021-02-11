@@ -1,6 +1,7 @@
 package poussecafe.spring.mongo.storage.codegeneration;
 
 import poussecafe.source.generation.GeneratorTest;
+import poussecafe.spring.mongo.storage.source.MongoStorageAdaptersCodeGenerator;
 
 public class MongoStorageAdaptersCodeGeneratorTest extends GeneratorTest {
 

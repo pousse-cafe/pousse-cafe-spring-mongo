@@ -1,7 +1,7 @@
-package poussecafe.spring.mongo.storage.codegeneration;
+package poussecafe.spring.mongo.storage.source;
 
 import poussecafe.discovery.DataAccessImplementation;
-import poussecafe.source.analysis.Name;
+import poussecafe.source.analysis.ClassName;
 import poussecafe.source.analysis.Visibility;
 import poussecafe.source.generation.NamingConventions;
 import poussecafe.source.generation.tools.AstWrapper;
@@ -16,15 +16,15 @@ import static java.util.Objects.requireNonNull;
 public class MongoDataAccessImplementationEditor {
 
     public void edit() {
-        compilationUnitEditor.setPackage(NamingConventions.adaptersPackageName(aggregate));
+        compilationUnitEditor.setPackage(NamingConventions.adaptersPackageName(aggregate.aggregatePackage()));
 
-        var autowiredTypeName = new Name("org.springframework.beans.factory.annotation.Autowired");
+        var autowiredTypeName = new ClassName("org.springframework.beans.factory.annotation.Autowired");
         compilationUnitEditor.addImport(autowiredTypeName);
         compilationUnitEditor.addImport(DataAccessImplementation.class);
         compilationUnitEditor.addImport(MongoDataAccess.class);
         compilationUnitEditor.addImport(SpringMongoDbStorage.class);
         compilationUnitEditor.addImport(NamingConventions.aggregateRootTypeName(aggregate));
-        compilationUnitEditor.addImport(NamingConventions.aggregateDataAccessTypeName(aggregate));
+        compilationUnitEditor.addImport(NamingConventions.aggregateDataAccessTypeName(aggregate.aggregatePackage()));
         compilationUnitEditor.addImport(NamingConventions.aggregateIdentifierTypeName(aggregate));
 
         var typeEditor = compilationUnitEditor.typeDeclaration();
@@ -34,7 +34,7 @@ public class MongoDataAccessImplementationEditor {
         dataAccessImplementationAnnotation.setAttribute("aggregateRoot", ast.newTypeLiteral(
                 NamingConventions.aggregateRootTypeName(aggregate).getIdentifier()));
         dataAccessImplementationAnnotation.setAttribute("dataImplementation", ast.newTypeLiteral(
-                NamingConventions.aggregateAttributesImplementationTypeName(aggregate).getIdentifier()));
+                NamingConventions.aggregateAttributesImplementationTypeName(aggregate.aggregatePackage()).getIdentifier()));
 
         var storageNameAccess = ast.ast().newFieldAccess();
         storageNameAccess.setExpression(ast.ast().newSimpleName(SpringMongoDbStorage.class.getSimpleName()));
@@ -42,22 +42,22 @@ public class MongoDataAccessImplementationEditor {
         dataAccessImplementationAnnotation.setAttribute("storageName", storageNameAccess);
 
         typeEditor.modifiers().setVisibility(Visibility.PUBLIC);
-        var typeName = NamingConventions.aggregateDataAccessImplementationTypeName(aggregate,
-                MongoStorageAdaptersCodeGenerator.STORAGE_NAME).getIdentifier();
+        var typeName = NamingConventions.aggregateDataAccessImplementationTypeName(aggregate.aggregatePackage(),
+                SpringMongoDbStorage.NAME).getIdentifier();
         typeEditor.setName(typeName);
 
         var superclassType = ast.newParameterizedType(MongoDataAccess.class);
         superclassType.typeArguments().add(ast.newSimpleType(
                 NamingConventions.aggregateIdentifierTypeName(aggregate).getIdentifier()));
         superclassType.typeArguments().add(ast.newSimpleType(
-                NamingConventions.aggregateAttributesImplementationTypeName(aggregate).getIdentifier()));
+                NamingConventions.aggregateAttributesImplementationTypeName(aggregate.aggregatePackage()).getIdentifier()));
         superclassType.typeArguments().add(ast.newSimpleType("String"));
         typeEditor.setSuperclass(superclassType);
 
         var superinterfaceType = ast.newParameterizedType(
-                NamingConventions.aggregateDataAccessTypeName(aggregate).getIdentifier());
+                NamingConventions.aggregateDataAccessTypeName(aggregate.aggregatePackage()).getIdentifier());
         superinterfaceType.typeArguments().add(ast.newSimpleType(
-                NamingConventions.aggregateAttributesImplementationTypeName(aggregate).getIdentifier()));
+                NamingConventions.aggregateAttributesImplementationTypeName(aggregate.aggregatePackage()).getIdentifier()));
         typeEditor.addSuperinterface(superinterfaceType);
 
         var convertIdEditor = typeEditor.method("convertId").get(0);
@@ -81,7 +81,7 @@ public class MongoDataAccessImplementationEditor {
         mongoRepositoryEditor.modifiers().markerAnnotation(Override.class);
         mongoRepositoryEditor.modifiers().setVisibility(Visibility.PROTECTED);
         var mongoRepositoryReturnType = ast.newSimpleType(
-                MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate).getIdentifier());
+                MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate.aggregatePackage()).getIdentifier());
         mongoRepositoryEditor.setReturnType(mongoRepositoryReturnType);
         var mongoRepositoryBody = ast.ast().newBlock();
         var mongoRepositoryReturnStatement = ast.ast().newReturnStatement();
@@ -93,7 +93,7 @@ public class MongoDataAccessImplementationEditor {
         repositoryFieldEditor.modifiers().markerAnnotation(autowiredTypeName.getIdentifier());
         repositoryFieldEditor.modifiers().setVisibility(Visibility.PRIVATE);
         repositoryFieldEditor.setType(ast.newSimpleType(
-                MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate).getIdentifier()));
+                MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate.aggregatePackage()).getIdentifier()));
 
         compilationUnitEditor.flush();
     }

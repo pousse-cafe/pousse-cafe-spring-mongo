@@ -1,6 +1,6 @@
-package poussecafe.spring.mongo.storage.codegeneration;
+package poussecafe.spring.mongo.storage.source;
 
-import poussecafe.source.analysis.Name;
+import poussecafe.source.analysis.ClassName;
 import poussecafe.source.analysis.Visibility;
 import poussecafe.source.generation.NamingConventions;
 import poussecafe.source.generation.tools.AstWrapper;
@@ -13,21 +13,21 @@ import static java.util.Objects.requireNonNull;
 public class MongoDataRepositoryEditor {
 
     public void edit() {
-        compilationUnitEditor.setPackage(NamingConventions.adaptersPackageName(aggregate));
+        compilationUnitEditor.setPackage(NamingConventions.adaptersPackageName(aggregate.aggregatePackage()));
 
-        var mongoRepositoryTypeName = new Name("org.springframework.data.mongodb.repository.MongoRepository");
+        var mongoRepositoryTypeName = new ClassName("org.springframework.data.mongodb.repository.MongoRepository");
         compilationUnitEditor.addImport(mongoRepositoryTypeName);
 
         var typeEditor = compilationUnitEditor.typeDeclaration();
 
         typeEditor.modifiers().setVisibility(Visibility.PUBLIC);
         typeEditor.setInterface(true);
-        var typeName = MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate);
+        var typeName = MongoStorageAdaptersCodeGenerator.aggregateMongoRepositoryTypeName(aggregate.aggregatePackage());
         typeEditor.setName(typeName);
 
         var mongoRepositoryType = ast.newParameterizedType(mongoRepositoryTypeName.getIdentifier());
         mongoRepositoryType.typeArguments().add(ast.newSimpleType(
-                NamingConventions.aggregateAttributesImplementationTypeName(aggregate).getIdentifier()));
+                NamingConventions.aggregateAttributesImplementationTypeName(aggregate.aggregatePackage()).getIdentifier()));
         mongoRepositoryType.typeArguments().add(ast.newSimpleType("String"));
         typeEditor.addSuperinterface(mongoRepositoryType);
 

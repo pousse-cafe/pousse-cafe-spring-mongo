@@ -8,7 +8,7 @@ import poussecafe.storage.TransactionRunner;
 
 public class SpringMongoDbStorage extends Storage {
 
-    public static final String NAME = "spring-mongo";
+    public static final String NAME = "SpringMongo";
 
     public static SpringMongoDbStorage instance() {
         return INSTANCE;
