@@ -1,14 +1,20 @@
 language: java
+
 addons:
   apt:
     packages:
-    - xmlstarlet
     - graphviz
+    - xmlstarlet
+
 jdk:
 - oraclejdk11
-after_success:
+
+install: skip
+
+script:
 - wget -O settings.xml https://raw.githubusercontent.com/pousse-cafe/pousse-cafe-deploy/master/snapshot_release_settings.xml
-- ./can_auto_deploy.sh && mvn deploy --settings settings.xml
+- if ./can_auto_deploy.sh  ; then mvn deploy --settings settings.xml -Dmaven.javadoc.skip=true -DskipTests; else mvn verify -B -U -Dmaven.javadoc.skip=true; fi
+
 env:
   global:
   - secure: WW9RYDx++aTX32ChLATrhJiKJ///WFk0GZnu3wQrNWQgLxIBkWavZRJii6ZOdKdTMUo6lU6pIos0tX1BAgrRSAFRVbrwLh9PD+wbrlAlkhSVnVylW4RxWLKJyFLG4Xtb1EITneZlVS7lBdGrt9344pm3VEyOcXdW6wkG+bpcgQUOu2/v6GBg4rjXh6p5gLVxbwy27sTzxfzpxvCR3EesyFbiX1D6LzCYxb2kP0JJeKUAblI4skKEwxGnb8NEtKDXsVoqVSUIaq304H9U4KUHBDB3TaPEyGejnf8B0Ub0nIawN5zkw8nMh/68t4gPnoTLIKuWRKRVt8Y4LCwO6fRXI2kmIWvSrqIDgnFvhE0uKcpACdtVYYDXvcudESetUuqWGUeBGU2/9cRU8+kW/PDEGOfX0+aLKXjtjrT95o+vjMv0tKCyptIM1nlvFuzhPyLJmGvOFlf4hdr5P8T+IypJoKcFtic3G1wGWv/WIvgNqoEEZBiDB73FK1+ADDaMyXSx2SRTN3Lhj5HWli5bFeVxzg8WiGRjqaUUnRRdUPCTF5sbZHT0q8Gd0Hr5VCDcOuARNDKbTeT/7DLAW5XcemW0Uxz3FWk7ItPqRwkEigAgU9nbkoWfSZcr+tJZj3lhJmWRWv0uQ4cQFWImnWm4HvdFlOPlUoBe8cvs22IyLyMiq9o=
