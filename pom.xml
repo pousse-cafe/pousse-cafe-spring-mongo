@@ -50,6 +50,19 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <scm>
         <connection>scm:git:https://github.com/pousse-cafe/pousse-cafe-spring-mongo.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/pousse-cafe/pousse-cafe-spring-mongo.git</developerConnection>
